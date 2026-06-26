@@ -1,0 +1,630 @@
+:root {
+    --bg-dark: #090d16;
+    --bg-panel: #121824;
+    --border-color: #222d3f;
+    --text-primary: #f3f4f6;
+    --text-muted: #9ca3af;
+    --clr-indigo: #4f46e5;
+    --clr-emerald: #10b981;
+    --clr-amber: #f59e0b;
+    --clr-rose: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    padding-bottom: 60px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.main-header {
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accent {
+    color: var(--clr-emerald);
+}
+
+.badge {
+    border: 1px solid var(--clr-emerald);
+    color: var(--clr-emerald);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+/* Layout Grid */
+.main-layout {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Top Cards Metrics */
+.metrics-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.card h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.card small {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 4px;
+}
+
+/* Radar Section */
+.alert-box {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-left: 6px solid var(--clr-emerald);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.radar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.radar-header h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.recommendation-area {
+    margin-top: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.recommendation-area h5 {
+    color: var(--clr-amber);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.recommendation-area ul {
+    padding-left: 18px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.recommendation-area li {
+    margin-bottom: 4px;
+}
+
+/* CASHIER KASIR WORKSPACE AREA */
+.cashier-workspace {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+}
+
+.catalog-panel,
+.cart-panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header {
+    margin-bottom: 15px;
+}
+
+.panel-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Catalog Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    overflow-y: auto;
+    max-height: 500px;
+    padding-right: 5px;
+}
+
+.product-card {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--clr-emerald);
+}
+
+.img-frame {
+    width: 100%;
+    height: 110px;
+    background-color: #1a2333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    font-size: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.prod-info {
+    padding: 12px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.prod-info h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.prod-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+/* REVISI: Kontrol Aksi Tambahan untuk Master Barang */
+.prod-meta-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 5px;
+}
+
+.btn-restock {
+    background: rgba(79, 70, 229, 0.2);
+    border: 1px solid var(--clr-indigo);
+    color: var(--text-primary);
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-restock:hover {
+    background: var(--clr-indigo);
+}
+
+/* Cart Basket Table */
+.cart-table-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 300px;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.cart-table th {
+    padding: 10px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.qty-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    width: 24px;
+    height: 24px;
+    background: #222d3f;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Checkout Billing Box */
+.checkout-box {
+    background-color: var(--bg-dark);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Management Grid Panels */
+.management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.panel h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Inputs & Form Elements */
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+}
+
+.form-group input,
+.form-group select,
+.form-inline input {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--clr-emerald);
+}
+
+.form-inline {
+    display: flex;
+    gap: 10px;
+}
+
+.hidden-fields {
+    display: none;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-left: 3px solid var(--clr-indigo);
+}
+
+/* Buttons Pack */
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--clr-indigo);
+    color: white;
+}
+
+.btn-indigo {
+    background-color: var(--clr-indigo);
+    color: white;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.btn-success {
+    background-color: var(--clr-emerald);
+    color: white;
+    width: 100%;
+}
+
+.btn-danger-filled {
+    background-color: var(--clr-rose);
+    color: white;
+    width: 100%;
+}
+
+.btn-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--clr-rose);
+    color: var(--clr-rose);
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: scale(0.98);
+}
+
+/* Ledger Jurnal Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.ledger-table th {
+    background-color: var(--bg-dark);
+    padding: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.ledger-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Utilities Color */
+.text-danger {
+    color: var(--clr-rose) !important;
+}
+
+.text-success {
+    color: var(--clr-emerald) !important;
+}
+
+.text-warning {
+    color: var(--clr-amber) !important;
+}
+
+/* Pengaman Teks Angka agar Tidak Jebol */
+.metrics-summary .card h3 {
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: help;
+}
+
+/* ================= PINDAHAN DARI HEAD INDEX (CLEAN HTML PRINCIPLE) ================= */
+.search-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.search-box:focus {
+    border-color: var(--clr-indigo);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* REVISI: Alert stok kritis mendukung tema gelap (Dark Theme Alert Box) */
+.alert-stok {
+    background: rgba(239, 68, 68, 0.15);
+    border-left: 4px solid var(--clr-rose);
+    padding: 14px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: none;
+    font-size: 0.9rem;
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-group-flex {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.progress-container {
+    background-color: var(--border-color);
+    border-radius: 10px;
+    width: 100%;
+    height: 8px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.badge-capsule {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.bg-pemasukan {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.bg-pengeluaran {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.bg-utang {
+    background: #fee2e2;
+    color: #991b1b;
+    animation: pulse 2s infinite;
+}
+
+.score-box {
+    font-size: 1.4rem;
+    font-weight: 900;
+    background: var(--bg-dark);
+    padding: 5px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: inline-block;
+}
+
+/* REVISI: Chart wrapper mendukung warna tema gelap dashboard */
+.chart-wrapper {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 15px;
+    max-height: 220px;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #struk-printable,
+    #struk-printable * {
+        visibility: visible;
+    }
+
+    #struk-printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 80mm;
+        font-family: monospace;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .cashier-workspace,
+    .management-grid {
+        grid-template-columns: 1fr;
+    }
+}
