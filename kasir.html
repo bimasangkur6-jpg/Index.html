@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kasir Pintar & Kendali Bisnis Pro Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="container header-flex">
+            <h2>Super<span class="accent">.Kasir</span></h2>
+            <div class="system-status" style="display: flex; align-items: center; gap: 10px;">
+                Skor Keuangan: <span id="fin-score" class="score-box">—</span>
+                Status: <span id="status-global" class="badge">Mengaudit...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-layout">
+
+        <section class="metrics-summary">
+            <div class="card">
+                <span class="card-title">Total Uang Kas Riil</span>
+                <h3 id="stat-total-kas">Rp 0</h3>
+                <small>Modal operasional siap pakai</small>
+            </div>
+            <div class="card">
+                <span class="card-title">Nilai Aset Barang (Stok)</span>
+                <h3 id="stat-total-barang" class="text-success">Rp 0</h3>
+                <small>Modal tertanam di produk</small>
+            </div>
+            <div class="card">
+                <span class="card-title">Total Sisa Utang</span>
+                <h3 id="stat-total-utang" class="text-danger">Rp 0</h3>
+                <small>Kewajiban pokok saat ini</small>
+            </div>
+            <div class="card" id="runway-card">
+                <span class="card-title">Sisa Napas Bisnis</span>
+                <h3 id="stat-runway">∞ Aman</h3>
+                <small id="runway-sub">Batas ketahanan modal</small>
+            </div>
+        </section>
+
+        <section class="radar-section">
+            <div class="alert-box" id="radar-box">
+                <div class="radar-header" style="flex-direction: column; align-items: flex-start; gap: 5px;">
+                    <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                        <h4 id="radar-title">Memproses Analisis Risiko...</h4>
+                        <span id="debt-ratio-badge" style="font-weight:bold; font-size:1.1rem;">DSR: 0%</span>
+                    </div>
+                    <div style="width: 100%; margin: 8px 0;">
+                        <label style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">METERAN BEBAN UTANG
+                            TERHADAP OMSET (Batas Aman Max 35%):</label>
+                        <div class="progress-container" style="height: 14px;">
+                            <div id="dsr-progress-bar" class="progress-bar"
+                                style="width: 0%; background-color: #10b981;"></div>
+                        </div>
+                    </div>
+                    <small id="dsr-interpretation" class="text-muted">Menghitung kapasitas pinjaman tersisa...</small>
+                </div>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+                <p id="radar-desc">Sistem sedang menghitung tingkat risiko kebangkrutan usaha Anda...</p>
+                <div class="recommendation-area">
+                    <h5>💡 Solusi Strategis Radar Finansial:</h5>
+                    <ul id="radar-actions"></ul>
+                </div>
+            </div>
+        </section>
+
+        <div id="panel-stok-kritis" class="alert-stok">
+            <strong>⚠️ PERINGATAN LOGISTIK:</strong> Stok produk berikut hampir habis (&lt; 4 unit):
+            <span id="list-stok-kritis"></span>. Segera lakukan restock logistik!
+        </div>
+
+        <section class="cashier-workspace">
+
+            <div class="catalog-panel">
+                <div class="panel-header">
+                    <h3>Etalase Jualan</h3>
+                    <input type="text" id="scan-barcode" class="search-box"
+                        placeholder="🔍 Scan Barcode / Ketik Nama Produk untuk input cepat (Tekan Enter)..."
+                        onkeypress="handleBarcodeSearch(event)">
+                </div>
+                <div class="products-grid" id="cashier-catalog-container"></div>
+            </div>
+
+            <div class="cart-panel">
+                <h3>Nota & Distribusi Keranjang</h3>
+
+                <div class="chart-wrapper">
+                    <canvas id="chart-keranjang" style="width: 100%; height: 160px;"></canvas>
+                </div>
+
+                <div class="cart-table-wrapper" style="margin-top: 15px;">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Produk & Logistik</th>
+                                <th>Qty</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="checkout-box">
+                    <div class="bill-row">
+                        <span>Total Belanja:</span>
+                        <strong id="cart-total-bill" style="font-size: 1.4rem; color: #10b981;">Rp 0</strong>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="pay-amount">Uang Tunai Diterima</label>
+                        <input type="text" id="pay-amount" placeholder="Rp 0"
+                            oninput="maskerRupiah(this); hitungKembalian()">
+                    </div>
+                    <div class="bill-row" style="margin-top: 10px;">
+                        <span>Uang Kembalian:</span>
+                        <strong id="pay-change" style="font-size: 1.2rem; color: #f59e0b;">Rp 0</strong>
+                    </div>
+                    <button onclick="prosesSelesaiBayar()" class="btn btn-success"
+                        style="margin-top: 15px; font-size: 1.1rem; padding: 12px; width: 100%;">
+                        Selesaikan Transaksi & Potong Stok
+                    </button>
+                    <button onclick="cetakStrukThermal()" class="btn btn-primary"
+                        style="margin-top: 8px; width: 100%; background-color: #4b5563;">
+                        Cetak Struk Nota Terakhir
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="management-grid">
+
+            <div class="panel">
+                <h3>➕ Tambah Master Produk</h3>
+                <form id="form-barang" onsubmit="tambahBarangMaster(event)">
+                    <div class="form-group">
+                        <label>Nama Barang / Barcode ID</label>
+                        <input type="text" id="prod-nama" placeholder="Contoh: Tensimeter / 899123456" required>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Harga Jual (Rp)</label>
+                            <input type="text" id="prod-harga" placeholder="Rp 0" oninput="maskerRupiah(this)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stok Gudang</label>
+                            <input type="number" id="prod-stok" placeholder="50" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Foto Produk</label>
+                        <input type="file" id="prod-foto" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-indigo">Simpan ke Etalase</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h3>📉 Kas Awal, Beban Bulanan & Pengaman Data</h3>
+
+                <div class="form-inline" style="margin-bottom: 15px;">
+                    <input type="text" id="input-kas-awal" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                    <button onclick="updateKasAwal()" class="btn btn-primary">Simpan Kas</button>
+                </div>
+
+                <div
+                    style="background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--border-color);">
+                    <label style="font-weight: bold; font-size: 0.85rem; color: var(--text-primary);">BRANKAS DATA
+                        (ANTI-HAPUS):</label>
+                    <div class="btn-group-flex">
+                        <button onclick="eksporDataKeFile()" class="btn"
+                            style="background:#059669; color:#fff; font-size:0.8rem; padding:8px;">📥 Backup Data
+                            (.json)</button>
+                        <button onclick="triggerInputFile()" class="btn"
+                            style="background:#dc2626; color:#fff; font-size:0.8rem; padding:8px;">📤 Restore/Muat
+                            File</button>
+                    </div>
+                    <input type="file" id="file-restore" accept=".json" style="display: none;"
+                        onchange="imporDataDariFile(event)">
+                </div>
+
+                <form id="form-transaksi" onsubmit="tambahTransaksiBiaya(event)">
+                    <div class="form-group">
+                        <label>Jenis Beban</label>
+                        <select id="tx-jenis" onchange="sesuaikanFormUtang()" required>
+                            <option value="pengeluaran">📤 Pengeluaran Tetap / Operasional</option>
+                            <option value="utang">⚠️ Pendaftaran Utang Usaha Baru</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan</label>
+                        <input type="text" id="tx-nama" placeholder="Sewa Tempat / KUR Bank" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nominal</label>
+                        <input type="text" id="tx-nominal" placeholder="Rp 0" oninput="maskerRupiah(this)" required>
+                    </div>
+                    <div id="form-khusus-utang" class="hidden-fields">
+                        <div class="form-group">
+                            <label>Cicilan Wajib Bulanan</label>
+                            <input type="text" id="tx-cicilan" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger-filled">Daftarkan Beban Biaya</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="ledger-section">
+            <div class="panel">
+                <h3>📖 Jurnal Finansial & Riwayat Transaksi Aktif</h3>
+                <div class="table-responsive">
+                    <table class="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Keterangan Aktivitas</th>
+                                <th>Nominal Akuntansi</th>
+                                <th>Beban Bulanan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="struk-printable" style="display: none;"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
