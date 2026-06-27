@@ -10,6 +10,7 @@
     --clr-rose: #ef4444;
 }
 
+/* Base Styling Core Elements */
 * {
     margin: 0;
     padding: 0;
@@ -29,7 +30,6 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
 .main-header {
     background-color: var(--bg-panel);
     border-bottom: 1px solid var(--border-color);
@@ -46,285 +46,68 @@ body {
 }
 
 .accent {
-    color: var(--clr-emerald);
+    color: var(--clr-indigo);
 }
 
-.badge {
-    border: 1px solid var(--clr-emerald);
-    color: var(--clr-emerald);
-    padding: 5px 12px;
-    border-radius: 50px;
+/* Category Navigation Filter Tabs */
+.category-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+.tab-btn {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 6px 14px;
     font-size: 0.8rem;
-    font-weight: 700;
-    background: rgba(16, 185, 129, 0.05);
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-/* Layout Grid */
-.main-layout {
-    margin-top: 30px;
+.tab-btn:hover,
+.tab-btn.active {
+    background: var(--clr-indigo);
+    color: #fff;
+    border-color: var(--clr-indigo);
+}
+
+/* Form controls & Live input filter */
+.search-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-dark);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 5px;
 }
 
-/* Top Cards Metrics */
-.metrics-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
-
-.card {
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 20px;
-}
-
-.card-title {
+.form-group label {
     font-size: 0.8rem;
     color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
     font-weight: 600;
 }
 
-.card h3 {
-    font-size: 1.4rem;
-    font-weight: 800;
-}
-
-.card small {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    display: block;
-    margin-top: 4px;
-}
-
-/* Radar Section */
-.alert-box {
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-color);
-    border-left: 6px solid var(--clr-emerald);
-    border-radius: 10px;
-    padding: 20px;
-}
-
-.radar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.radar-header h4 {
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.recommendation-area {
-    margin-top: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 12px;
-    border-radius: 6px;
-}
-
-.recommendation-area h5 {
-    color: var(--clr-amber);
-    margin-bottom: 6px;
-    font-size: 0.9rem;
-}
-
-.recommendation-area ul {
-    padding-left: 18px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-.recommendation-area li {
-    margin-bottom: 4px;
-}
-
-/* CASHIER KASIR WORKSPACE AREA */
-.cashier-workspace {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 20px;
-}
-
-.catalog-panel,
-.cart-panel {
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.panel-header {
-    margin-bottom: 15px;
-}
-
-.panel-header p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-/* Catalog Products Grid */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 14px;
-    overflow-y: auto;
-    max-height: 500px;
-    padding-right: 5px;
-}
-
-.product-card {
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--clr-emerald);
-}
-
-.img-frame {
-    width: 100%;
-    height: 110px;
-    background-color: #1a2333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    font-size: 2rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.img-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.prod-info {
-    padding: 12px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.prod-info h4 {
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.prod-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-}
-
-/* Cart Basket Table */
-.cart-table-wrapper {
-    flex-grow: 1;
-    overflow-y: auto;
-    max-height: 300px;
-    margin-bottom: 15px;
-    border-bottom: 1px dashed var(--border-color);
-}
-
-.cart-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-    text-align: left;
-}
-
-.cart-table th {
+.form-group input,
+.form-group select {
     padding: 10px;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.cart-table td {
-    padding: 12px 10px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.qty-btn-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.qty-btn {
-    width: 24px;
-    height: 24px;
-    background: #222d3f;
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Checkout Billing Box */
-.checkout-box {
-    background-color: var(--bg-dark);
-    padding: 16px;
-    border-radius: 10px;
+    background: var(--bg-dark);
     border: 1px solid var(--border-color);
-}
-
-.bill-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Management Grid Panels */
-.management-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.panel {
-    background-color: var(--bg-panel);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.panel h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.panel-subtitle {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-}
-
-/* Inputs & Form Elements */
-.form-group {
-    margin-bottom: 12px;
+    color: #fff;
+    border-radius: 6px;
 }
 
 .form-grid-2 {
@@ -333,145 +116,286 @@ body {
     gap: 10px;
 }
 
-.form-group label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 4px;
+/* Main POS Grid Layout */
+.main-layout {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.metrics-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card-title {
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
-.form-group input,
-.form-group select,
-.form-inline input {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--bg-dark);
+.card h3 {
+    font-size: 1.6rem;
+    margin: 5px 0;
+}
+
+.cashier-workspace {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr;
+    gap: 20px;
+}
+
+.catalog-panel,
+.cart-panel,
+.panel {
+    background: var(--bg-panel);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    padding: 20px;
+    border-radius: 12px;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--clr-emerald);
+/* Product Card Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    max-height: 580px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
-.form-inline {
-    display: flex;
-    gap: 10px;
-}
-
-.hidden-fields {
-    display: none;
-    background: rgba(0, 0, 0, 0.15);
+.product-card {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
     padding: 12px;
-    border-radius: 6px;
-    margin-top: 8px;
-    border-left: 3px solid var(--clr-indigo);
-}
-
-/* Buttons Pack */
-.btn {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    border-radius: 10px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: 0.2s;
 }
 
-.btn-primary {
-    background-color: var(--clr-indigo);
+.product-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--clr-indigo);
+}
+
+.img-frame {
+    width: 100%;
+    height: 100px;
+    background: var(--bg-panel);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Buttons Engine Styles */
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.btn-success {
+    background: var(--clr-emerald);
+    color: white;
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: var(--clr-rose);
+    color: #fca5a5;
+}
+
+.btn-danger:hover {
+    background: var(--clr-rose);
     color: white;
 }
 
 .btn-indigo {
-    background-color: var(--clr-indigo);
+    background: var(--clr-indigo);
     color: white;
-    width: 100%;
-    margin-top: 5px;
 }
 
-.btn-success {
-    background-color: var(--clr-emerald);
+.btn-primary {
+    background: #3b82f6;
     color: white;
-    width: 100%;
 }
 
 .btn-danger-filled {
-    background-color: var(--clr-rose);
+    background: var(--clr-rose);
     color: white;
+}
+
+/* Cart Table Design */
+.cart-table-wrapper {
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.cart-table {
     width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
 }
 
-.btn-danger {
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid var(--clr-rose);
-    color: var(--clr-rose);
-    padding: 3px 8px;
-    font-size: 0.75rem;
-    border-radius: 4px;
+.cart-table th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
 }
 
-.btn:hover {
-    opacity: 0.9;
-    transform: scale(0.98);
+.cart-table td {
+    padding: 8px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* Ledger Jurnal Table */
-.table-responsive {
-    overflow-x: auto;
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Management grid layout */
+.management-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
 .ledger-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.85rem;
-    text-align: left;
 }
 
 .ledger-table th {
-    background-color: var(--bg-dark);
+    background: var(--bg-dark);
     padding: 10px;
     color: var(--text-muted);
-    text-transform: uppercase;
-    font-size: 0.75rem;
 }
 
 .ledger-table td {
-    padding: 12px 10px;
+    padding: 10px;
     border-bottom: 1px solid var(--border-color);
 }
 
-/* Utilities Color */
-.text-danger {
-    color: var(--clr-rose) !important;
+/* Badge Capsules */
+.badge-capsule {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.text-success {
-    color: var(--clr-emerald) !important;
+.bg-pemasukan {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
 }
 
-.text-warning {
-    color: var(--clr-amber) !important;
+.bg-pengeluaran {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
 }
 
-/* Pengaman Teks Angka agar Tidak Jebol */
-.metrics-summary .card h3 {
-    font-size: clamp(1.1rem, 2vw, 1.6rem);
-    /* Otomatis mengecil secara dinamis berdasarkan lebar layar */
-    white-space: nowrap;
-    /* Memaksa teks tetap satu baris, tidak turun ke bawah */
-    overflow: hidden;
-    /* Menyembunyikan teks yang keluar dari kotak */
-    text-overflow: ellipsis;
-    /* Mengubah ujung teks yang terpotong menjadi titik-titik (...) */
-    cursor: help;
-    /* Mengubah kursor jadi tanda tanya saat diarahkan ke angka */
+.bg-utang {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+/* Auth Overlay Glass Shield */
+.login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(9, 13, 22, 0.98);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.role-indicator {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.badge-admin {
+    background: rgba(79, 70, 229, 0.2);
+    border: 1px solid var(--clr-indigo);
+    color: #a5b4fc;
+}
+
+.badge-kasir {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--clr-emerald);
+    color: #a7f3d0;
+}
+
+.alert-stok {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--clr-rose);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+/* Print Mode overrides */
+@media print {
+    body * {
+        display: none !important;
+    }
+
+    #struk-printable,
+    #struk-printable * {
+        display: block !important;
+        color: #000 !important;
+        background: transparent !important;
+    }
+
+    #struk-printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm;
+        font-family: monospace;
+    }
 }
 
 @media (max-width: 1024px) {
