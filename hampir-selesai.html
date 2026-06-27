@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCashier Pro - Enterprise Business Control</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Desain Tambahan untuk UI Login Modern & Target Progress */
+        .login-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111827, #030712);
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+        }
+        .login-box {
+            background: rgba(18, 24, 36, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px; border-radius: 24px; width: 100%; max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+        .login-box h2 { font-size: 1.8rem; margin-bottom: 8px; color: #f3f4f6; letter-spacing: -0.5px; }
+        .login-box p { color: #9ca3af; font-size: 0.9rem; margin-bottom: 24px; }
+        .input-modern {
+            width: 100%; padding: 14px; background: #0b0f19; border: 1px solid #222d3f;
+            border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s;
+            text-align: center; letter-spacing: 2px;
+        }
+        .input-modern:focus { border-color: #4f46e5; outline: none; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
+        .select-modern {
+            width: 100%; padding: 14px; background: #0b0f19; border: 1px solid #222d3f;
+            border-radius: 12px; color: #fff; font-size: 1rem; margin-bottom: 15px; cursor: pointer;
+        }
+        .progress-container { background: #1e293b; border-radius: 20px; height: 8px; width: 100%; margin-top: 6px; overflow: hidden; }
+        .progress-bar { background: linear-gradient(90deg, #3b82f6, #10b981); height: 100%; width: 0%; transition: width 0.5s ease-in-out; }
+        .target-card { background: #111723; border: 1px solid #222d3f; padding: 15px; border-radius: 14px; margin-bottom: 12px; }
+        .flex-space { display: flex; justify-content: space-between; align-items: center; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .btn-delete:hover { background: #dc2626; transform: scale(1.02); }
+    </style>
+</head>
+
+<body>
+
+    <div id="login-overlay" class="login-screen">
+        <div class="login-box">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🛡️</div>
+            <h2>SmartCashier<span style="color: #4f46e5;">.Pro</span></h2>
+            <p>Sistem Otorisasi Multi-Role Perusahaan</p>
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="font-size: 0.8rem; color: #9ca3af; display: block; margin-bottom: 5px;">Pilih Hak Akses</label>
+                <select id="login-role" class="select-modern">
+                    <option value="kasir">🧑‍💼 Staf Kasir (Karyawan Toko)</option>
+                    <option value="admin">👑 Owner / Direktur Utama (Admin)</option>
+                </select>
+            </div>
+            <div style="text-align: left; margin-bottom: 25px;">
+                <label style="font-size: 0.8rem; color: #9ca3af; display: block; margin-bottom: 5px;">Masukkan PIN Sandi</label>
+                <input type="password" id="login-pin" class="input-modern" placeholder="••••••" maxlength="6">
+            </div>
+            <button onclick="prosesLogin()" class="btn btn-indigo" style="padding: 14px; width: 100%; font-weight: bold; border-radius: 12px; font-size: 1rem;">
+                Autentikasi Masuk
+            </button>
+            <small style="color: #6b7280; display:block; margin-top:15px;">
+                Demo PIN Keamanan -> Admin: 1234 | Kasir: 5678
+            </small>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-flex">
+            <h2>🛒 SmartCashier<span class="accent">.Pro</span> <span id="user-badge" class="role-indicator">---</span></h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="admin-only">
+                    Kondisi Toko: <span id="status-global" class="badge">Menganalisis...</span>
+                </div>
+                <button onclick="prosesLogout()" class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 6px;">🔒 Keluar Sesi</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-layout">
+
+        <section class="metrics-summary admin-only">
+            <div class="card" style="border-left: 4px solid #3b82f6;">
+                <span class="card-title">📈 Total Omset</span>
+                <h3 id="acc-omset">Rp 0</h3>
+                <small>Uang kotor masuk nota</small>
+            </div>
+            <div class="card" style="border-left: 4px solid #f59e0b;">
+                <span class="card-title">📦 Total HPP (Modal)</span>
+                <h3 id="acc-hpp" class="text-warning">Rp 0</h3>
+                <small>Biaya asli produk terjual</small>
+            </div>
+            <div class="card" style="border-left: 4px solid #ef4444;">
+                <span class="card-title">💸 Operasional & Utang</span>
+                <h3 id="acc-biaya" class="text-danger">Rp 0</h3>
+                <small>Beban bulanan + cicilan aktiva</small>
+            </div>
+            <div class="card" style="border-left: 4px solid #10b981;">
+                <span class="card-title">💰 Laba Bersih</span>
+                <h3 id="acc-laba" class="text-success">Rp 0</h3>
+                <small>Keuntungan murni bersih</small>
+            </div>
+        </section>
+
+        <section class="management-grid admin-only" style="grid-template-columns: 1.2fr 2fr; gap: 20px; margin-top: -10px;">
+            <div class="panel" style="display: flex; flex-direction: column; justify-content: flex-start; gap: 5px;">
+                <h3 style="margin-bottom: 10px;">🎯 Tracker Pencapaian Target Usaha</h3>
+                
+                <div class="target-card">
+                    <div class="flex-space"><span style="font-size:0.85rem;">Hari Ini</span><strong id="label-target-hari" style="font-size:0.85rem;">0/0</strong></div>
+                    <div class="progress-container"><div id="progress-hari" class="progress-bar"></div></div>
+                </div>
+                <div class="target-card">
+                    <div class="flex-space"><span style="font-size:0.85rem;">Bulan Ini</span><strong id="label-target-bulan" style="font-size:0.85rem;">0/0</strong></div>
+                    <div class="progress-container"><div id="progress-bulan" class="progress-bar" style="background: linear-gradient(90deg, #a855f7, #6366f1)"></div></div>
+                </div>
+                <div class="target-card">
+                    <div class="flex-space"><span style="font-size:0.85rem;">Tahun Ini</span><strong id="label-target-tahun" style="font-size:0.85rem;">0/0</strong></div>
+                    <div class="progress-container"><div id="progress-tahun" class="progress-bar" style="background: linear-gradient(90deg, #f59e0b, #ef4444)"></div></div>
+                </div>
+                <div class="target-card" style="background: #1e1b4b; border-color: #4338ca;">
+                    <div class="flex-space"><span>🛑 Total Beban Utang Toko:</span><strong id="txt-total-hutang" class="text-danger">Rp 0</strong></div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3>📊 Grafik Tren Keuangan</h3>
+                    <div class="category-tabs" style="margin: 0;">
+                        <button class="tab-btn active" onclick="ubahPeriodeGrafik('hari', this)">Hari</button>
+                        <button class="tab-btn" onclick="ubahPeriodeGrafik('minggu', this)">Minggu</button>
+                        <button class="tab-btn" onclick="ubahPeriodeGrafik('bulan', this)">Bulan</button>
+                        <button class="tab-btn" onclick="ubahPeriodeGrafik('tahun', this)">Tahun</button>
+                    </div>
+                </div>
+                <div style="height: 220px; position: relative;">
+                    <canvas id="chart-analisis-bisnis"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="cashier-workspace">
+            <div class="catalog-panel">
+                <div class="panel-header">
+                    <h3>📦 Etalase Jualan Utama</h3>
+                    <input type="text" id="scan-barcode" class="search-box" placeholder="🔍 Cari Nama Barang atau Scan ID Barcode..." oninput="handleLiveSearch()">
+                </div>
+                <div class="products-grid" id="cashier-catalog-container"></div>
+            </div>
+
+            <div class="cart-panel">
+                <h3>🛒 Nota Kasir Aktif</h3>
+                <div class="cart-table-wrapper">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th>Qty</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-body"></tbody>
+                    </table>
+                </div>
+                <div class="checkout-box">
+                    <div class="form-grid-2" style="margin-bottom: 10px;">
+                        <div class="form-group">
+                            <label>Diskon %</label>
+                            <input type="number" id="cart-discount" value="0" min="0" max="100" oninput="renderKeranjangBelanja()">
+                        </div>
+                        <div class="form-group">
+                            <label>Tunai Uang Cash</label>
+                            <input type="text" id="pay-amount" placeholder="Rp 0" oninput="maskerRupiah(this); hitungKembalian()">
+                        </div>
+                    </div>
+                    <div class="bill-row">
+                        <span>Total Tagihan:</span>
+                        <strong id="cart-total-bill" style="font-size: 1.4rem; color: #10b981;">Rp 0</strong>
+                    </div>
+                    <div class="bill-row">
+                        <span>Kembalian:</span>
+                        <strong id="pay-change" style="font-size: 1.2rem; color: #f59e0b;">Rp 0</strong>
+                    </div>
+                    <button onclick="prosesSelesaiBayar()" class="btn btn-success" style="margin-top: 12px; font-size: 1.1rem; padding: 12px; width: 100%;">
+                        🤝 Kunci Nota & Potong Stok
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="management-grid admin-only" style="grid-template-columns: 1fr 1fr;">
+            <div class="panel">
+                <h3>➕ Tambah Item Produk Baru</h3>
+                <form id="form-barang" onsubmit="tambahBarangMaster(event)">
+                    <div class="form-group">
+                        <label>Nama Produk / Barcode ID</label>
+                        <input type="text" id="prod-nama" placeholder="Contoh: Alkohol Medis / 89912..." required>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Harga Beli (Modal Asli)</label>
+                            <input type="text" id="prod-harga-beli" placeholder="Rp 0" oninput="maskerRupiah(this)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Harga Jual (Ke Konsumen)</label>
+                            <input type="text" id="prod-harga-jual" placeholder="Rp 0" oninput="maskerRupiah(this)" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Stok Awal Gudang</label>
+                        <input type="number" id="prod-stok" placeholder="50" required>
+                    </div>
+                    <button type="submit" class="btn btn-indigo" style="width: 100%;">Daftarkan Ke Etalase</button>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h3>⚙️ Konfigurasi Target Bisnis & Manajemen Utang</h3>
+                <form onsubmit="simpanKonfigurasiBisnis(event)">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Target Omset Harian</label>
+                            <input type="text" id="cfg-target-hari" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Target Omset Bulanan</label>
+                            <input type="text" id="cfg-target-bulan" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Target Omset Tahunan</label>
+                            <input type="text" id="cfg-target-tahun" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Pokok Utang Usaha</label>
+                            <input type="text" id="cfg-total-hutang" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Beban Cicilan Utang / Bulan (Masuk Biaya)</label>
+                        <input type="text" id="cfg-cicilan-hutang" placeholder="Rp 0" oninput="maskerRupiah(this)">
+                    </div>
+                    <button type="submit" class="btn btn-success" style="width: 100%;">Update Parameter Bisnis</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="ledger-section admin-only" style="margin-top: 20px;">
+            <div class="panel">
+                <h3>🛠️ Manajemen & Penghapusan Stok Barang Gudang</h3>
+                <div class="table-responsive">
+                    <table class="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>ID Produk</th>
+                                <th>Nama Barang</th>
+                                <th>Harga Beli</th>
+                                <th>Harga Jual</th>
+                                <th>Sisa Stok</th>
+                                <th>Aksi Pembersihan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-kelola-barang"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="ledger-section admin-only" style="margin-top: 20px;">
+            <div class="panel">
+                <h3>📖 Jurnal Finansial Keuangan Toko</h3>
+                <div class="table-responsive">
+                    <table class="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Keterangan Aktivitas</th>
+                                <th>Nominal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
